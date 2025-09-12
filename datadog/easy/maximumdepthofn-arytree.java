@@ -5,35 +5,26 @@ class Node {
     public List<Node> children;
 
     public Node() {}
-
-    public Node(int _val) {
-        val = _val;
-    }
-
-    public Node(int _val, List<Node> _children) {
-        val = _val;
-        children = _children;
-    }
+    public Node(int _val) { val = _val; }
+    public Node(int _val, List<Node> _children) { val = _val; children = _children; }
 };
 */
 
 class Solution {
     public int maxDepth(Node root) {
-        // If the tree is empty, return 0
+        // Base case: empty tree has depth 0
         if (root == null) {
             return 0;
         }
 
         int max = 0;
-        // Go through each child of the current node
+        // DFS recursion: explore all children of the current node
         for (Node child : root.children) {
-            // Find the depth of the child's subtree
-            int childDepth = maxDepth(child);
-            // Keep track of the deepest subtree we've seen so far
-            max = Math.max(max, childDepth);
+            int childDepth = maxDepth(child); // recursive depth of each subtree
+            max = Math.max(max, childDepth);  // track maximum depth seen so far
         }
 
-        // Add 1 to count the current node's level
+        // Add 1 for the current root node
         return max + 1;
     }
 }
