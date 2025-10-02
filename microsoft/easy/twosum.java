@@ -1,25 +1,26 @@
 class Solution {
     public int[] twoSum(int[] nums, int target) {
         // Hash Map approach for O(n) solution
-        // Intuition: For each number, check if its complement (target - number) exists
+        // Intuition: For each number, check if its difference (target - number) exists
         // Store each number with its index as we iterate
         
         Map<Integer, Integer> indices = new HashMap<>();
-
-        // First pass: populate hash map with all numbers and their indices
+        
+        // Single pass: for each number, look for its difference
         for (int i = 0; i < nums.length; i++) {
-            indices.put(nums[i], i);
-        }
-
-        // Second pass: for each number, look for its complement
-        for (int i = 0; i < nums.length; i++) {
-            int complement = target - nums[i];
+            int current = nums[i];
+            // Calculate what number we need to add to current to reach target
+            // If current + difference = target, then difference = target - current
+            int difference = target - current;
             
-            // Check if complement exists and is not the same element
-            // (handles case where same value appears twice but we need different indices)
-            if (indices.containsKey(complement) && indices.get(complement) != i) {
-                return new int[]{i, indices.get(complement)};
+            // Check if difference exists in our map
+            // If found, we have our pair of indices
+            if (indices.containsKey(difference)) {
+                return new int[]{indices.get(difference), i};
             }
+            
+            // Store current number with its index for future lookups
+            indices.put(current, i);
         }
         
         // Should never reach here given problem constraints guarantee solution exists
