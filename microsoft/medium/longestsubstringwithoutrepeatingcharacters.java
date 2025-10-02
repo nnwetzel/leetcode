@@ -4,7 +4,8 @@ class Solution {
         // Intuition: Expand window until duplicate found, then shrink from left
         // Example: "pwwkew" → windows: "p"(1), "pw"(2), jump past first 'w' → "w"(1), "wk"(2), "wke"(3), jump past first 'w' → "kew"(3)
         
-        Map<Character, Integer> map = new HashMap<>(); // ^character    ^last seen index
+        // HashMap stores character -> last seen index mapping
+        Map<Character, Integer> map = new HashMap<>();
         int start = 0, len = 0;
         
         // Process each character while maintaining sliding window
@@ -21,7 +22,8 @@ class Solution {
             }
             
             // Update max length with current window size
-            // Example: substring from index 2 to 4 has le ngth 4-2+1 = 3
+            // Formula: i - start + 1 calculates length because indices are 0-based but length is 1-based
+            // Example: substring from index 2 to 4 has length 4-2+1 = 3
             len = Math.max(len, i - start + 1);
             
             // Record current position of this character for future reference

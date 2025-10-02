@@ -11,12 +11,14 @@
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         // Elementary school addition: add digits from right to left
-        // Example: [2,4,3] + [5,6,4] = 342 + 465 = 807 → [7,0,8]
+        // Example: [2,4,3] + [5,6,4] represents 342 + 465 = 807
         
-        // Dummy head simplifies list building - return tempHead.next at end
+        // tempHead: dummy node to avoid checking "is this the first node?"
+        // Without it, we'd need special logic for creating the very first node
         ListNode tempHead = new ListNode(0);
         
-        // Current tracks where to add next digit
+        // current: pointer that moves as we build the result list
+        // tempHead stays fixed at the beginning, current does the actual building
         ListNode current = tempHead;
         int carry = 0;
 
@@ -26,23 +28,23 @@ class Solution {
             int digit1 = (l1 != null) ? l1.val : 0;
             int digit2 = (l2 != null) ? l2.val : 0;
 
-            // Add digits plus carry: 2 + 5 + 0 = 7, then 4 + 6 + 0 = 10, etc.
+            // First iteration: 2 + 5 = 7
             int total = digit1 + digit2 + carry;
 
-            // Extract carry and digit to store
-            carry = total / 10;        // 10 → carry = 1
-            int digit = total % 10;    // 10 → digit = 0
+            // First iteration: 7 → carry = 0, digit = 7
+            carry = total / 10;
+            int digit = total % 10;
             
-            // Add new node and move current forward
+            // Build result: first create [7]
             current.next = new ListNode(digit);
             current = current.next;
 
-            // Move to next digits
+            // Move to next digits in input lists
             if (l1 != null) l1 = l1.next;
             if (l2 != null) l2 = l2.next;
         }
         
-        // Skip dummy head
+        // Return [7,0,8] (skip dummy head)
         return tempHead.next;
     }
 }
