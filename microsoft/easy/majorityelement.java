@@ -1,31 +1,29 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        // Boyer-Moore Voting Algorithm
-        // Intuition: Count majority element instances as +1 and others as -1
-        // The majority element will always have a positive net count
+        // Boyer-Moore Voting Algorithm - O(n) time, O(1) space
+        // Intuition: Count majority element as +1, others as -1, majority survives
+        // Example: [2,2,1,1,1,2,2] → candidate changes but majority 2 wins
         
         int count = 0;
         Integer candidate = null;
 
-        // Find candidate for majority element
+        // Find majority candidate - O(n) time
         for (int num : nums) {
-            // When count reaches 0, we "forget" the previous prefix
-            // and consider current element as new candidate
+            // When count reaches 0, reset candidate
+            // This discards prefixes with equal majority/minority elements
             if (count == 0) {
                 candidate = num;
             }
             
-            // Increment count for candidate, decrement for others
+            // Vote: increment for candidate, decrement for others
             if (num == candidate) {
                 count++;
-            }
-            else {
+            } else {
                 count--;
             }
         }
 
-        // Algorithm works because we can safely discard prefixes where
-        // count reaches 0, as they contain equal numbers of majority/minority elements
+        // Majority element survives because it appears more than n/2 times
         return candidate;
     }
 }

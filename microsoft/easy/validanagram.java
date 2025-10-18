@@ -1,10 +1,10 @@
 class Solution {
     public boolean isAnagram(String s, String t) {
-        // Frequency counting approach for O(n) solution
+        // Frequency counting approach - O(n) time, O(1) space
         // Intuition: Anagrams have identical character frequencies
-        // Count frequency of each character in both strings and compare
+        // Example: "anagram" and "nagaram" → both have same char counts
         
-        // Early exit if lengths don't match - can't be anagrams
+        // Early exit if lengths don't match
         if (s.length() != t.length()) {
             return false;
         }
@@ -12,14 +12,10 @@ class Solution {
         Map<Character, Integer> frequencyCount1 = new HashMap<>();
         Map<Character, Integer> frequencyCount2 = new HashMap<>();
         
-        // Count character frequencies in first string
+        // Count character frequencies in both strings - O(n) iterations
         for (int i = 0; i < s.length(); i++) {
             frequencyCount1.put(s.charAt(i), frequencyCount1.getOrDefault(s.charAt(i), 0) + 1);
-        }
-        
-        // Count character frequencies in second string
-        for (int j = 0; j < t.length(); j++) {
-            frequencyCount2.put(t.charAt(j), frequencyCount2.getOrDefault(t.charAt(j), 0) + 1);
+            frequencyCount2.put(t.charAt(i), frequencyCount2.getOrDefault(t.charAt(i), 0) + 1);
         }
         
         // Anagrams have identical frequency maps
