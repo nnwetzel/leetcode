@@ -12,56 +12,33 @@
 public class Solution {
     public boolean hasCycle(ListNode head) {
         // THOUGHT PROCESS:
-        // Brute force: Track all visited nodes in HashSet - O(n) time, O(n) space
-        // Example: Visit nodes A→B→C→B, when we see B again, cycle detected
-        // Pseudocode:
-        // 1. Create HashSet to store visited nodes
-        // 2. Traverse list:
-        //    - If current node already in set: cycle found
-        //    - Otherwise: add to set and continue
-        // This works but uses O(n) extra space
-        
-        // HashSet approach - O(n) time, O(n) space
-        Set<ListNode> seen = new HashSet<>();
-        
-        // Traverse the list - O(n) iterations
-        while (head != null) {
-            // If we've seen this node before, cycle detected
-            if (seen.contains(head)) {
-                return true;
-            }
-            
-            // Mark this node as visited
-            seen.add(head);
-            head = head.next;
+        // Use two pointers at different speeds to detect a cycle
+        // Slow moves one step, fast moves two steps
+        // If there is a cycle the fast pointer will eventually lap the slow pointer
+        // Time O(n) Space O(1)
+        //
+        // PSEUDOCODE:
+        // 1. Put slow and fast at head
+        // 2. While fast and fast.next are not null
+        //   - Advance slow by one, fast by two
+        //   - If slow and fast point to the same node return true
+        // 3. Return false
+
+        // slow moves one step at a time
+        ListNode slow = head;
+        // fast moves two steps at a time
+        ListNode fast = head;
+
+        // Fast will meet null eventually if there is no cycle
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next; // advance fast two nodes
+            slow = slow.next;      // advance slow one node
+
+            // If pointers meet there is a cycle
+            if (slow == fast) return true;
         }
-        
-        // Reached end of list (null), no cycle
+
+        // fast reached the end, no cycle found
         return false;
     }
 }
-
-/* OPTIMAL SOLUTION (Two Pointers - Floyd's Cycle Detection):
-// O(n) time, O(1) space
-// Think of fast/slow as runners on a track - fast will lap slow if there's a loop
-public boolean hasCycle(ListNode head) {
-    // Handle edge cases
-    if (head == null || head.next == null) return false;
-    
-    ListNode slow = head;        // Moves 1 step at a time
-    ListNode fast = head.next;   // Moves 2 steps at a time
-    
-    // Continue until pointers meet or fast reaches end
-    while (slow != fast) {  // ← This checks if fast has "lapped" slow
-        // If fast reaches end, no cycle exists
-        if (fast == null || fast.next == null) return false;
-        
-        slow = slow.next;        // Move slow by 1
-        fast = fast.next.next;   // Move fast by 2
-    }
-    
-    // When we exit the loop, slow == fast, meaning fast caught up to slow
-    // This only happens if there's a cycle (fast "lapped" slow)
-    return true;  // ← Cycle detected because fast caught slow
-}
-*/

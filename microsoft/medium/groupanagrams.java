@@ -25,8 +25,9 @@ class Solution {
             Arrays.sort(chars);
             String key = String.valueOf(chars);
 
-            // Group strings by their sorted key
+            // Ensure a list exists for this sorted key
             groups.putIfAbsent(key, new ArrayList<>());
+            // Add the current string to its corresponding group
             groups.get(key).add(s);
         }
         

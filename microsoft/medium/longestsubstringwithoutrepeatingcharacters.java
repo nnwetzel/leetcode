@@ -1,64 +1,87 @@
 class Solution {
-    public int lengthOfLongestSubstring(String s) {
+    public int characterReplacement(String s, int k) {
         // THOUGHT PROCESS:
-        // Brute force: Check every possible substring - O(n³) time
-        // Example: For "abcabcbb", check "a", "ab", "abc", "abca", "b", "bc", "bca", etc.
-        // This is too slow because we check each substring for duplicates
+        // Use a sliding window and count characters inside it
+        // Keep track of the most frequent character in the window
+        // If window size minus that frequency is greater than k shrink the window
         //
-        // Better: Sliding window approach - O(n) time
         // Pseudocode:
-        // 1. Use HashMap to track character positions
-        // 2. Expand window by moving right pointer
-        // 3. When duplicate found: jump left pointer past previous occurrence
-        // 4. Track maximum window size seen
-        
-        // Sliding window approach - O(n) time complexity
-        // Intuition: Expand window until duplicate found, then jump past it
-        // Example: "pwwkew" → "pw"(2) → jump past first 'w' → "kew"(3)
-        
-        // HashMap stores character -> last seen index
-        Map<Character, Integer> map = new HashMap<>();
-        int start = 0, len = 0;
-        
-        // Single pass through string - O(n) time
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            
-            // If duplicate found within current window, jump past it
-            // Check if character c is a duplicate within the current window:
-            // map.containsKey(c): we've seen c before
-            // map.get(c) >= start: previous occurrence is inside the current window (not before it)
-            // This ensures we only react to duplicates that affect the current substring
-            if (map.containsKey(c) && map.get(c) >= start) {
-                start = map.get(c) + 1;
-            }
-            
-            // Update max length: i - start + 1 (0-based to 1-based conversion)
-            len = Math.max(len, i - start + 1);
-            
-            // Record current position for future duplicate checks
-            map.put(c, i);
-        }
-        
-        return len;
-    }
-}
+        // 1. Create empty map, set left = 0, set maxFreq = 0, set longestLen = 0
+        // 2. Move the right pointer from the first character to the last character
+        //   - Increase count for character at right and update maxFreq
+        //   - While window length minus maxFreq is greater than k
+        //     - Decrease count for character at left and move left one step right
+        //   - Update longestLen with current window size
+        // 3. Return longestLen
 
-/* BRUTE FORCE SOLUTION (for reference):
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        int maxLen = 0;
-        
-        for (int i = 0; i < s.length(); i++) {
-            Set<Character> seen = new HashSet<>();
-            for (int j = i; j < s.length(); j++) {
-                if (seen.contains(s.charAt(j))) break;
-                seen.add(s.charAt(j));
-                maxLen = Math.max(maxLen, j - i + 1);
+        // count maps each character to its frequency inside the current window
+        Map<Character, Integer> count = new HashMap<>();
+        int longestLen = 0;
+        int l = 0;
+        // maxFreq is the count of the most frequent character in the current window
+        int maxFreq = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            char rightChar = s.charAt(r);
+            count.put(rightChar, count.getOrDefault(rightChar, 0) + 1);
+            // Update most frequent character count seen in the window
+            maxFreq = Math.max(maxFreq, count.get(rightChar));
+
+            // If we need more than k replacements to make all chars equal, shrink window
+            while ((r - l + 1) - maxFreq > k) {
+                char leftChar = s.charAt(l);
+                count.put(leftChar, count.get(leftChar) - 1);
+                l++;
             }
+
+            // Record current window size
+            longestLen = Math.max(longestLen, r - l + 1);
         }
-        
-        return maxLen;
+        return longestLen;
     }
 }
-*/
+// ...existing code...
+```// filepath: /Users/nnwetzel/Desktop/Desktop-Main/Projects/leetcode/microsoft/medium/longestsubstringwithoutrepeatingcharacters.java
+// ...existing code...
+class Solution {
+    public int characterReplacement(String s, int k) {
+        // THOUGHT PROCESS:
+        // Use a sliding window and count characters inside it
+        // Keep track of the most frequent character in the window
+        // If window size minus that frequency is greater than k shrink the window
+        //
+        // Pseudocode:
+        // 1. Create empty map, set left = 0, set maxFreq = 0, set longestLen = 0
+        // 2. For right from 0 to last index
+        //   - Increase count for character at right and update maxFreq
+        //   - While window length minus maxFreq is greater than k
+        //     - Decrease count for character at left and move left one step right
+        //   - Update longestLen with current window size
+        // 3. Return longestLen
+
+        // count maps each character to its frequency inside the current window
+        Map<Character, Integer> count = new HashMap<>();
+        int longestLen = 0;
+        int l = 0;
+        // maxFreq is the count of the most frequent character in the current window
+        int maxFreq = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            char rightChar = s.charAt(r);
+            count.put(rightChar, count.getOrDefault(rightChar, 0) + 1);
+            // Update most frequent character count seen in the window
+            maxFreq = Math.max(maxFreq, count.get(rightChar));
+
+            // If we need more than k replacements to make all chars equal, shrink window
+            while ((r - l + 1) - maxFreq > k) {
+                char leftChar = s.charAt(l);
+                count.put(leftChar, count.get(leftChar) - 1);
+                l++;
+            }
+
+            // Record current window size
+            longestLen = Math.max(longestLen, r - l + 1);
+        }
+        return longestLen;
+    }
+}

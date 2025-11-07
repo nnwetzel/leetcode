@@ -11,54 +11,48 @@
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         // THOUGHT PROCESS:
-        // Recursive approach - O(n + m) time, O(n + m) space (call stack)
-        // Pseudocode:
-        // 1. Base cases: if one list is null, return the other
-        // 2. Compare current nodes of both lists
-        // 3. Choose smaller node and recursively merge remaining lists
-        // 4. Return the chosen node as head of merged portion
-        
-        // Base cases: if one list is empty, return the other
-        // This automatically adds all remaining nodes to the end of merged list
-        if (list1 == null) {
-            return list2;  // All remaining nodes in list2 are already sorted
-        }
-        else if (list2 == null) {
-            return list1;  // All remaining nodes in list1 are already sorted
-        }
-        // Choose smaller value and recursively merge rest
-        else if (list1.val < list2.val) {
-            // list1 has smaller value, so it goes first in merged list
-            // Set list1.next to the result of merging list1's remaining nodes with list2
-            list1.next = mergeTwoLists(list1.next, list2);
-            return list1;  // Return list1 as the head of this merged portion
-        }
-        else {
-            // list2 has smaller/equal value, so it goes first in merged list
-            // Set list2.next to the result of merging list1 with list2's remaining nodes
-            list2.next = mergeTwoLists(list1, list2.next);
-            return list2;  // Return list2 as the head of this merged portion
-        }
-    }
-}
+        // Merge while walking both lists with two pointers — O(n + m) time, O(1) extra space
+        //
+        // PSEUDOCODE:
+        // 1. Create a dummy node and set tail to it
+        // 2. While both lists have nodes (we are going to remove each node as we add it to the merged list)
+        //   - Compare current values and append the smaller to tail
+        //   - Advance the chosen list and tail
+        // 3. Append remaining nodes from the non-empty list
+        // 4. Return dummy.next
 
-/* ITERATIVE SOLUTION (for reference):
-public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-    ListNode dummy = new ListNode(0);
-    ListNode current = dummy;
-    
-    while (list1 != null && list2 != null) {
-        if (list1.val <= list2.val) {
-            current.next = list1;
-            list1 = list1.next;
-        } else {
-            current.next = list2;
-            list2 = list2.next;
+        // Dummy node simplifies building the result list
+        ListNode dummy = new ListNode(0);
+        // Tail points to the last node in the merged list
+        ListNode tail = dummy;
+
+        // While both lists are non-empty we can compare and merge
+        while (list1 != null && list2 != null) {
+            // If list1 value is smaller, attach from list1 because smaller values come first in non-decreasing order
+            if (list1.val < list2.val) {
+                // Attach node from list1
+                tail.next = list1;
+                // Advance list1
+                list1 = list1.next;
+            }
+            else {
+                // Attach node from list2 (ties like can come from either list)
+                tail.next = list2;
+                // Advance list2
+                list2 = list2.next;
+            }
+            // Advance tail to the newly attached node
+            tail = tail.next;
         }
-        current = current.next;
+
+        // Append the remaining nodes from the non-empty list (while loop above ends when one list is empty)
+        if (list1 != null) {
+            tail.next = list1;
+        } else {
+            tail.next = list2;
+        }
+
+        // Return head of merged list
+        return dummy.next;
     }
-    
-    current.next = (list1 != null) ? list1 : list2;
-    return dummy.next;
 }
-*/

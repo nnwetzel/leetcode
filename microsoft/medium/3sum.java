@@ -1,69 +1,55 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         // THOUGHT PROCESS:
-        // Brute force: Try all triplets with 3 nested loops - O(n³) time
-        // Example: Check [nums[0],nums[1],nums[2]], [nums[0],nums[1],nums[3]], etc.
-        // This is too slow for large inputs
+        // We pick a starting number (the fixed element) then find two other numbers that make the total zero
+        // Use two pointers moving inward to find those two numbers in a sorted array
+        // Time complexity: O(n^2) Space complexity: O(1) extra
         //
-        // Better approach: Sort + Two pointers - O(n²) time
         // Pseudocode:
-        // 1. Sort array to enable two-pointer technique
-        // 2. For each element as first number:
-        //    - Use two pointers to find pairs that complete the triplet
-        //    - Skip duplicates to avoid duplicate results
-        
-        // Two-pointer approach after sorting - O(n²) time complexity
-        // Intuition: Fix first element, then use two pointers to find pairs that sum to target
-        // Example: [-1,0,1,2,-1,-4] → sorted: [-4,-1,-1,0,1,2] → find triplets that sum to 0
-        
+        // 1. Sort nums
+        // 2. For each nstarting number in nums
+        // 3.   Skip this number if it's the same as the previous one
+        // 4.   Set left to the element after the current number and right to the last element
+        // 5.   While left pointer is less than right pointer
+        //      - Compute the total of the three numbers
+        //      - If the total equals 0 add the triplet and move both pointers inward
+        //      - If the total is less than 0 move left one step right
+        //      - If the total is greater than 0 move right one step left
+
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
+        int n = nums.length;
 
-        // Process elements and stop at positive numbers - O(n) iterations
-        // If nums[i] > 0, all remaining elements are positive, so sum can't equal 0
-        for (int i = 0; i < nums.length && nums[i] <= 0; i++) {
-            // Skip duplicates for first element to avoid duplicate triplets
-            if (i == 0 || nums[i - 1] != nums[i]) {
-                twoSumII(nums, i, res);
+        for (int i = 0; i < n; i++) {
+            // Skip duplicate starting numbers
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            int l = i + 1;
+            int r = n - 1;
+
+            while (l < r) {
+                int total = nums[i] + nums[l] + nums[r];
+
+                // Total equals 0 -> found a triplet
+                if (total == 0) {
+                    res.add(Arrays.asList(nums[i], nums[l], nums[r]));
+                    // Move both pointers inward
+                    l++;
+                    r--;
+                    // Skip duplicates for the second and third numbers
+                    while (l < r && nums[l] == nums[l - 1]) l++;
+                    while (l < r && nums[r] == nums[r + 1]) r--;
+                }
+                // Total is less than 0 -> need a larger sum
+                else if (total < 0) {
+                    l++;
+                }
+                // Total is greater than 0 -> need a smaller sum
+                else if (total > 0) {
+                    r--;
+                }
             }
         }
         return res;
     }
-
-    void twoSumII(int[] nums, int i, List<List<Integer>> res) {
-        // Two-pointer technique to find pairs that sum with nums[i] to equal 0
-        int lo = i + 1;
-        int hi = nums.length - 1;
-
-        // Continue while pointers don't meet - O(n) per call
-        while (lo < hi) {
-            int sum = nums[i] + nums[lo] + nums[hi];
-
-            if (sum < 0) {
-                lo++;  // Sum too small, move left pointer right
-            } else if (sum > 0) {
-                hi--;  // Sum too large, move right pointer left
-            } else {
-                // Found valid triplet
-                res.add(Arrays.asList(nums[i], nums[lo++], nums[hi--]));
-
-                // Skip duplicates while pointers are valid
-                while (lo < hi && nums[lo] == nums[lo - 1]) {
-                    lo++;
-                }
-            }
-        }
-    }
 }
-
-/* BRUTE FORCE SOLUTION (for reference):
-for (int i = 0; i < n; i++) {
-    for (int j = i + 1; j < n; j++) {
-        for (int k = j + 1; k < n; k++) {
-            if (nums[i] + nums[j] + nums[k] == 0) {
-                // Found triplet, but need to handle duplicates
-            }
-        }
-    }
-}
-*/
