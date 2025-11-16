@@ -1,87 +1,35 @@
 class Solution {
-    public int characterReplacement(String s, int k) {
-        // THOUGHT PROCESS:
-        // Use a sliding window and count characters inside it
-        // Keep track of the most frequent character in the window
-        // If window size minus that frequency is greater than k shrink the window
-        //
-        // Pseudocode:
-        // 1. Create empty map, set left = 0, set maxFreq = 0, set longestLen = 0
-        // 2. Move the right pointer from the first character to the last character
-        //   - Increase count for character at right and update maxFreq
-        //   - While window length minus maxFreq is greater than k
-        //     - Decrease count for character at left and move left one step right
-        //   - Update longestLen with current window size
-        // 3. Return longestLen
+    // THOUGHT PROCESS:
+    // Keep a sliding window of characters with no repeats. Expand the window to the right
+    // and, when a repeat appears, move the left edge forward until the repeat is removed.
+    // Track the largest window seen.
+    // Time: O(n). Space: O(min(n, charset)).
 
-        // count maps each character to its frequency inside the current window
-        Map<Character, Integer> count = new HashMap<>();
-        int longestLen = 0;
-        int l = 0;
-        // maxFreq is the count of the most frequent character in the current window
-        int maxFreq = 0;
+    // PSEUDOCODE:
+    // 1. Use a set to store characters in the current window.
+    // 2. For each character at the right pointer:
+    //    - While the character is already in the set, remove the leftmost char and move left forward.
+    //    - Add the current character to the set.
+    //    - Update maximum length with current window size (right - left + 1).
+    // 3. Return maximum length.
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> seen = new HashSet<>();
+        int l = 0, maxLen = 0;
 
+        // expand window by moving right
         for (int r = 0; r < s.length(); r++) {
-            char rightChar = s.charAt(r);
-            count.put(rightChar, count.getOrDefault(rightChar, 0) + 1);
-            // Update most frequent character count seen in the window
-            maxFreq = Math.max(maxFreq, count.get(rightChar));
 
-            // If we need more than k replacements to make all chars equal, shrink window
-            while ((r - l + 1) - maxFreq > k) {
-                char leftChar = s.charAt(l);
-                count.put(leftChar, count.get(leftChar) - 1);
+            // shrink window from left until c is not in the window
+            while (seen.contains(s.charAt(r))) {
+                seen.remove(s.charAt(l));
                 l++;
             }
 
-            // Record current window size
-            longestLen = Math.max(longestLen, r - l + 1);
+            // include current char and update answer
+            seen.add(s.charAt(r));
+            maxLen = Math.max(maxLen, r - l + 1);
         }
-        return longestLen;
-    }
-}
-// ...existing code...
-```// filepath: /Users/nnwetzel/Desktop/Desktop-Main/Projects/leetcode/microsoft/medium/longestsubstringwithoutrepeatingcharacters.java
-// ...existing code...
-class Solution {
-    public int characterReplacement(String s, int k) {
-        // THOUGHT PROCESS:
-        // Use a sliding window and count characters inside it
-        // Keep track of the most frequent character in the window
-        // If window size minus that frequency is greater than k shrink the window
-        //
-        // Pseudocode:
-        // 1. Create empty map, set left = 0, set maxFreq = 0, set longestLen = 0
-        // 2. For right from 0 to last index
-        //   - Increase count for character at right and update maxFreq
-        //   - While window length minus maxFreq is greater than k
-        //     - Decrease count for character at left and move left one step right
-        //   - Update longestLen with current window size
-        // 3. Return longestLen
 
-        // count maps each character to its frequency inside the current window
-        Map<Character, Integer> count = new HashMap<>();
-        int longestLen = 0;
-        int l = 0;
-        // maxFreq is the count of the most frequent character in the current window
-        int maxFreq = 0;
-
-        for (int r = 0; r < s.length(); r++) {
-            char rightChar = s.charAt(r);
-            count.put(rightChar, count.getOrDefault(rightChar, 0) + 1);
-            // Update most frequent character count seen in the window
-            maxFreq = Math.max(maxFreq, count.get(rightChar));
-
-            // If we need more than k replacements to make all chars equal, shrink window
-            while ((r - l + 1) - maxFreq > k) {
-                char leftChar = s.charAt(l);
-                count.put(leftChar, count.get(leftChar) - 1);
-                l++;
-            }
-
-            // Record current window size
-            longestLen = Math.max(longestLen, r - l + 1);
-        }
-        return longestLen;
+        return maxLen;
     }
 }

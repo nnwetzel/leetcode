@@ -6,7 +6,8 @@ class Solution {
         // THOUGHT PROCESS:
         // Brute force: Compare every pair - O(n^2) time
         // Better: Use a hash set to track seen values - O(n) time, O(n) space
-        // Pseudocode:
+        //
+        // PSEUDOCODE:
         // 1. Create an empty set for seen values
         // 2. For each number in nums
         //   - If number is in set return true

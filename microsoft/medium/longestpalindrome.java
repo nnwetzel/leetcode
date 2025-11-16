@@ -1,49 +1,45 @@
 class Solution {
     public String longestPalindrome(String s) {
         // THOUGHT PROCESS:
-        // Brute force: Check every possible substring for palindrome - O(n³) time
-        // Example: For "babad", check "b", "ba", "bab", "baba", "babad", "a", "ab", etc.
-        // This is too slow because we check each substring character by character
+        // Expand around each center (single char and between chars) to find the longest palindrome.
+        // Time: O(n^2). Space: O(1).
         //
-        // Better: Expand around centers - O(n²) time
-        // Pseudocode:
-        // 1. For each position, try it as palindrome center
-        // 2. Check both odd-length (center at i) and even-length (center between i and i+1)
-        // 3. Expand outward while characters match
-        // 4. Track the longest palindrome found
-        
-        // Expand around centers approach - O(n²) time complexity
-        // Intuition: Test every position as potential center and expand outward
-        // Example: "aba" → try centers at index 0, 1, 2 → longest is "aba" from center 1
-        
+        // PSEUDOCODE:
+        // 1. For each index i in the string:
+        //    - Try center at i (odd length) and center between i and i+1 (even length).
+        // 2. For each center, expand left and right while characters match.
+        //    - After expansion, the palindrome is the substring between the last matching left+1 and right-1.
+        // 3. Keep the longest start/end seen so far.
+        // 4. Return the substring for the longest range.
         int n = s.length();
         int start = 0, end = 0;
 
-        // Test each position as potential palindrome center - O(n) positions
+        // try every character in the string as a center
         for (int i = 0; i < n; i++) {
-            // Check both odd-length and even-length palindromes
+            // j = 0 for odd length (example: "aba")
+            // j = 1 for even length (example: "abba")
             for (int j = 0; j <= 1; j++) {
                 int left = i;
-                int right = i + j;  // j=0: odd length, j=1: even length
-                
-                // Expand outward while characters match - O(n) expansion per center
+                int right = i + j;
+
+                // expand while characters match and indices are valid
                 while (left >= 0 && right < n && s.charAt(left) == s.charAt(right)) {
                     left--;
                     right++;
                 }
-                
-                // Step back to last valid positions
+
+                // after expanding, left and right are one step beyond the palindrome
                 left++;
                 right--;
 
-                // Update longest palindrome if current is longer
+                // update longest palindrome if needed
                 if (right - left > end - start) {
                     start = left;
                     end = right;
                 }
             }
         }
-        
+        // return the longest palindromic substring found
         return s.substring(start, end + 1);
     }
 }

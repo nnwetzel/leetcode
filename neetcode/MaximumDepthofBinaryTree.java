@@ -24,10 +24,8 @@ class Solution {
         // Base case: empty tree has depth 0
         if (root == null) return 0;
 
-        // Recurse left and compute its depth
+        // Recurse left and right to compute each depth
         int left = maxDepth(root.left);
-
-        // Recurse right and compute its depth
         int right = maxDepth(root.right);
 
         // Return current node contribution plus the larger of the two subtree depths

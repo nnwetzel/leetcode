@@ -5,17 +5,14 @@ class Solution {
         // Example: For ["eat","tea","tan","ate"], check if "eat" anagram of "tea", "tan", "ate", etc.
         // This is inefficient because we do many character comparisons
         //
-        // Better: Hash map with sorted keys - O(n * k log k) time
-        // Pseudocode:
+        // Better: Hash map with sorted keys
+        // Time: O(n * k log k). Space: O(n).
+
+        // PSEUDOCODE:
         // 1. For each string, sort its characters to create a key
         // 2. Use this key to group anagrams in a HashMap
         // 3. Anagrams will have identical sorted keys
         // 4. Return all groups as final result
-        
-        // Hash map approach using sorted strings as keys - O(n * k log k) time complexity
-        // Intuition: Anagrams have identical characters, so sorting creates same key
-        // Example: "eat", "tea", "ate" all sort to "aet" → grouped together
-        
         Map<String, List<String>> groups = new HashMap<>();
 
         // Process each string - O(n) strings

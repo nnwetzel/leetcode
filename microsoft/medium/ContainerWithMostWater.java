@@ -1,49 +1,30 @@
 class Solution {
+    // THOUGHT PROCESS:
+    // Use two pointers at the ends to calculate the widest container and move the pointer
+    // at the shorter line inward. Only moving the shorter line can possibly increase area.
+    // Time: O(n). Space: O(1).
+
+    // PSEUDOCODE:
+    // 1. Put left pointer at start and right pointer at end.
+    // 2. Before pointers meet:
+    //    - compute area with current pointers and update best.
+    //    - move the pointer at the shorter line inward.
+    // 3. Return the best area found.
     public int maxArea(int[] height) {
-        // THOUGHT PROCESS:
-        // Brute force: Try every pair of lines - O(n²) time
-        // This checks all combinations but is too slow for large inputs
-        //
-        // Better: Two pointer approach - O(n) time, O(1) space
-        // Pseudocode:
-        // 1. Start with widest container (left=0, right=n-1)
-        // 2. Calculate area and update maximum
-        // 3. Move pointer with smaller height inward
-        // 4. Continue until pointers meet
+        int l = 0, r = height.length - 1;
+        int max = 0;
 
-        int maxarea = 0;
-        int left = 0;
-        int right = height.length - 1;
-        
-        while (left < right) {
-            int width = right - left;
-            int length = Math.min(height[left], height[right]);
-            maxarea = Math.max(maxarea, (length * width));
-            
-            // Move pointer with smaller height - only way to potentially get larger area
-            if (height[left] <= height[right]) {
-                left++;
-            }
-            else {
-                right--;
-            }
+        // move pointers toward each other
+        while (l < r) {
+            int width = r - l;
+            int length = Math.min(height[l], height[r]);
+            // calculate and update best area
+            max = Math.max(max, width * length);
+
+            // move the pointer at the shorter line to try for a taller container
+            if (height[l] < height[r]) l++;
+            else r--;
         }
-        return maxarea;
+        return max;
     }
 }
-
-/* BRUTE FORCE SOLUTION:
-public int maxArea(int[] height) {
-    int maxarea = 0;
-
-    for (int left = 0; left < height.length; left++) {
-        for (int right = left + 1; right < height.length; right++) {
-            int width = right - left;
-            int length = Math.min(height[left], height[right]);
-            maxarea = Math.max(maxarea, (length * width));
-        }
-    }
-
-    return maxarea;
-}
-*/

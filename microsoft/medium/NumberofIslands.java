@@ -1,40 +1,50 @@
 class Solution {
+
+    private int ROWS, COLS;
+
     public int numIslands(char[][] grid) {
         // THOUGHT PROCESS:
-        // DFS approach to find connected components - O(m*n) time, O(m*n) space
-        // Pseudocode:
-        // 1. Iterate through each cell in the grid
-        // 2. When we find a '1', increment island count
-        // 3. Use DFS to mark all connected '1's as '0' (visited)
-        // 4. This ensures each island is counted only once
-        
-        if (grid == null || grid.length == 0) {
-            return 0;
-        }
+        // DFS approach to find connected components.
+        // Mark visited land as '0' while exploring so we don't count it twice.
+        // Time: O(m*n). Space: O(m*n) where m,n are grid dimensions.
 
-        int nr = grid.length;       // Number of rows
-        int nc = grid[0].length;    // Number of columns
-        int numIslands = 0;
+        // PSEUDOCODE:
+        // 1. Keep track of island count.
+        // 2. For each cell (row r, column c) in the grid:
+        //    - If the cell is '1' (land):
+        //      - Increment island count.
+        //      - Run a DFS to mark the whole connected island as visited.
+        // 3. Return island count.
         
-        for (int r = 0; r < nr; r++) {
-            for (int c = 0; c < nc; c++) {
+        if (grid == null || grid.length == 0) return 0;
+
+        ROWS = grid.length;
+        COLS = grid[0].length;
+        int numIslands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
                 if (grid[r][c] == '1') {
-                    numIslands++;           // Found new island
-                    dfs(grid, r, c);        // Go through entire island and make all parts '0'
+                    // Found new island
+                    numIslands++;
+                    // Go through entire island and make all parts '0'
+                    dfs(grid, r, c);
                 }
             }
         }
         return numIslands;
     }
 
+    // PSEUDOCODE:
+    // 1. If the position is outside the grid or the cell is '0', stop.
+    // 2. Mark the current cell as visited by setting it to '0'.
+    // 3. Recursively visit the four neighbors (up, down, left, right).
     public void dfs(char[][] grid, int r, int c) {
-        int nr = grid.length;       // Number of rows
-        int nc = grid[0].length;    // Number of columns
 
-        // Base cases: out of bounds or already visited/water
-        if (r < 0 || c < 0 || r >= nr || c >= nc || grid[r][c] == '0') {
-            return;
-        }
+        // Base case: out of bounds
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS) return;
+        // Base case: already visited or water
+        if (grid[r][c] == '0') return;
 
         // Mark current cell as visited - if it's part of the island, make it '0'
         grid[r][c] = '0';
