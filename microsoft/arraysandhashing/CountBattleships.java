@@ -2,10 +2,10 @@ class Solution {
     public int countBattleships(char[][] board) {
         // THOUGHT PROCESS:
         // Brute force: DFS/BFS to mark visited ship cells - correct but needs extra work
-        // Better: Count the "head" of each ship by scanning once
-        // Time: O(r*c). Space: O(1)
-        // A cell is a ship head if it is 'X' and there is no 'X' directly above or to the left.
-        //
+        // Better: Count the "head" of each ship by scanning once and checking neighbors
+        // A ship head is the first 'X' cell in its row/column.
+        // Time: O(r * c). Space: O(1)
+
         // PSEUDOCODE:
         // 1. Set count to zero
         // 2. For each cell in the board:

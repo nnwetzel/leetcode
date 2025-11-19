@@ -1,6 +1,6 @@
 class Solution {
 
-    // THOUGHT:
+    // THOUGHT PROCESS:
     // Keep a running prefix sum. For each prefix, the number of subarrays ending here with sum k
     // equals how many earlier prefixes had value (prefix - k). Track counts of prefix sums in a map.
     // Time: O(n). Space: O(n).

@@ -1,28 +1,20 @@
-import java.util.HashMap;
-
 class Solution {
-    public int singleNumber(int[] nums) {
-        // THOUGHT PROCESS:
-        // HashMap approach to count occurrences - O(n) time, O(n) space
-        // Pseudocode:
-        // 1. Count frequency of each number using HashMap
-        // 2. Iterate through array again to find number with count 1
-        // 3. Return that single occurrence number
-        
-        HashMap<Integer, Integer> numCounts = new HashMap<>();
 
-        // Count frequency of each number
+    // THOUGHT PROCESS:
+    // Use bitwise XOR: duplicate numbers cancel each other, leaving the unique number.
+    // Time: O(n). Space: O(1).
+
+    // PSEUDOCODE:
+    // 1. Set x to zero
+    // 2. For each number in the array:
+    //   - xor x with the number
+    // 3. Return x
+
+    public int singleNumber(int[] nums) {
+        int x = 0;
         for (int num : nums) {
-            numCounts.put(num, numCounts.getOrDefault(num, 0) + 1);
+            x ^= num; // duplicates cancel, result is the single number
         }
-        
-        // Find the number that appears only once
-        for (int num : nums) {
-            if (numCounts.get(num) == 1) {
-                return num;
-            }
-        }
-        
-        return 0;
+        return x;
     }
 }

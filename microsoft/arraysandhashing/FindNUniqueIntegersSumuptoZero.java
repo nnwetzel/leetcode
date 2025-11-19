@@ -1,5 +1,5 @@
 class Solution {
-    // THOUGHT (simple):
+    // THOUGHT PROCESS:
     // Create pairs that cancel each other: 1 and -1, 2 and -2, etc.
     // Keep adding pairs until we have used up the slots. If n is odd, put 0 in the last slot.
     // Time: O(n). Space: O(n).
