@@ -27,4 +27,4 @@ def split_subarrays(nums):
             return nums[:i+1], nums[i+1:]
     
     # no valid split found
-    return
+    return None, None
