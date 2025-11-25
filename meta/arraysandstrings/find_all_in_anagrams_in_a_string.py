@@ -5,6 +5,8 @@ You may return the answer in any order.
 
 from typing import List
 
+# Time: O(N) - single pass through s with a sliding window
+# Space: O(1) - character count dictionaries have at most 26 entries (assuming lowercase letters)
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
         # base case

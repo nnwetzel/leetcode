@@ -4,6 +4,8 @@ Split the given array into two smaller arrays where
 the sums of each smaller array are equal. Print out the two smaller arrays.
 """
 
+# Time: O(N) - single pass through the array
+# Space: O(1) - only storing sums and indices
 def split_subarrays(nums):
     # total sum of all elements
     total_sum = sum(nums)
