@@ -6,6 +6,7 @@ import random
 
 def get_random_fortune(filename, delimiter="#"):
 
+    # set chosen fortune, count of fortunes, and current fortune block
     chosen = None
     count = 0
     current_fortune = []
@@ -19,11 +20,12 @@ def get_random_fortune(filename, delimiter="#"):
             else:
                 # only process if the block is not empty
                 if current_fortune:
+                    # increment count of fortunes seen
                     count += 1
-                    # resevoir sampling: replace chosen with probability 1/count
+                    # update chosen fortune with probability 1/count
                     if random.randint(1, count) == 1:
                         chosen = ''.join(current_fortune)
-                # handle the case where the file does not end with a delimiter
+                # reset current fortune block
                 current_fortune = []
 
     # handle last fortune only if file doesn't end with delimiter
@@ -35,4 +37,4 @@ def get_random_fortune(filename, delimiter="#"):
     
     return chosen
 
-print(get_random_fortune("fortunes.txt"))
+# print(get_random_fortune("fortunes.txt"))

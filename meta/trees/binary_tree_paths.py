@@ -14,6 +14,7 @@ from typing import List, Optional
 # Space: O(H) - recursion stack up to height of tree
 def binaryTreePaths(root: Optional[TreeNode]) -> List[str]:
 
+    # helper DFS function
     # input node, current path string, list of paths
     def dfs(node, path, paths):
         if not node:

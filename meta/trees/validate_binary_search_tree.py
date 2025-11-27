@@ -15,8 +15,8 @@ from typing import Optional
 # Space: O(H) - recursion stack up to height of tree
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        
-        def valid(node: Optional[TreeNode], upper: int, lower: int) -> bool:
+
+        def valid(node, lower, upper) -> bool:
             # empty node is valid
             if node is None:
                 return True

@@ -16,10 +16,12 @@ class DataCenterSimulator:
 
     def add_failure(self, server_id, failure_time):
         """Schedule a server failure event."""
+        # push failure event onto min-heap which sorts by time
         heapq.heappush(self.failure_events, (failure_time, server_id))
 
     def add_recovery(self, server_id, recovery_time):
         """Schedule a server recovery event."""
+        # push recovery event onto min-heap which sorts by time
         heapq.heappush(self.recovery_events, (recovery_time, server_id))
 
     def simulate_until(self, end_time):
@@ -44,11 +46,13 @@ class DataCenterSimulator:
         # process events in chronological order
         for time, server, event_type in events:
 
+            # update server status based on event type
             if event_type == 'failure':
                 self.servers[server] = 'failed'
             else:
                 self.servers[server] = 'active'
 
+            # record event in timeline with total failed count
             timeline.append({
                 'time': time,
                 'server': server,

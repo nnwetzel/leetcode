@@ -1,0 +1,7 @@
+192.168.1.10 GET /index.html
+10.0.0.2 POST /login
+192.168.1.10 GET /about
+10.0.0.5 GET /home
+192.168.1.10 GET /contact
+10.0.0.2 GET /profile
+10.0.0.2 GET /settings

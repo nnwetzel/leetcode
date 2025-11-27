@@ -1,5 +1,7 @@
 from ast import List
 
+# Time: O(N^2) - nested loops over age counts
+# Space: O(1) - fixed size age count array
 class Solution:
     def numFriendRequests(self, ages: List[int]) -> int:
         # list of counts for ages 1 to 120

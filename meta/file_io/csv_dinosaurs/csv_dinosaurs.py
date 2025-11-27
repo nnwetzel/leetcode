@@ -16,23 +16,25 @@ def find_bipedal_speeds(dataset1, dataset2):
     # map: name -> stride length for bipedal dinosaurs only
     stride = {}
     with open(dataset2, newline="") as f:
-        reader = csv.reader(f)
-        next(reader)
-        for name, stride_length, stance in reader:
-            if stance == "bipedal":
-                stride[name] = float(stride_length)
+        reader = csv.DictReader(f)
+        # for each dinosaur, if bipedal, store stride length
+        for row in reader:
+            if row['STANCE'] == 'bipedal':
+                stride[row['NAME']] = float(row['STRIDE_LENGTH'])
 
+    # list of (speed, name) tuples
     speeds = []
 
     # compute speed for dinos that appear in both files
     with open(dataset1, newline="") as f:
-        reader = csv.reader(f)
-        next(reader)
-        for name, leg_length, _ in reader:
-            if name in stride:
-                leg = float(leg_length)
-                speed = ((stride[name] / leg) - 1) * math.sqrt(leg * G)
-                speeds.append((speed, name))
+        reader = csv.DictReader(f)
+        # for each dinosaur, if in stride dict, compute speed
+        for row in reader:
+            if row['NAME'] in stride:
+                leg = float(row['LEG_LENGTH'])
+                speed = ((stride[row['NAME']] / leg) - 1) * math.sqrt(leg * G)
+                # store (speed, name) tuple
+                speeds.append((speed, row['NAME']))
 
     # fastest to slowest (descending order)
     speeds.sort(reverse=True)

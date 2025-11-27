@@ -6,6 +6,7 @@ from collections import Counter
 import heapq
 
 def top_k_words(file_name, k):
+    # counter() is a hashmap/dictionary specialized for counting
     word_count = Counter()
 
     with open(file_name, 'r') as f:
@@ -25,6 +26,8 @@ def top_k_words(file_name, k):
     # k is the number of largest elements to return
     # word_count.items() is the iterable to search
     # key=lambda x: x[1] specifies to sort by frequency
+    print (word_count.items())
     return heapq.nlargest(k, word_count.items(), key=lambda x: x[1])
 
-# print(top_k_words('words.txt', 10))
+# print(top_k_words('words.txt', 2))
+top_k_words('words.txt', 10)
