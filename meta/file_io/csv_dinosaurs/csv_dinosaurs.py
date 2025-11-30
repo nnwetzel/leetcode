@@ -38,12 +38,12 @@ def find_bipedal_speeds(dataset1, dataset2):
 
     # fastest to slowest (descending order)
     speeds.sort(reverse=True)
-    # extract names only
-    return [name for _, name in speeds]
+    # print names only
+    for _, name in speeds:
+        print(name)
 
 # print names only
-for name in find_bipedal_speeds("dataset1.csv", "dataset2.csv"):
-    print(name)
+find_bipedal_speeds("dataset1.csv", "dataset2.csv")
 
 # Interview follow-ups:
 # 1. One file small, one large: Load small files in memory, stream large file.

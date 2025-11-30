@@ -4,9 +4,8 @@ from ast import List
 # Space: O(1) - fixed size age count array
 class Solution:
     def numFriendRequests(self, ages: List[int]) -> int:
-        # list of counts for ages 1 to 120
+        # histogram for ages 1 to 120
         age_count = [0] * 121
-        # increment counts for each age
         for age in ages:
             age_count[age] += 1
 
